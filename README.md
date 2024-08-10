@@ -1,66 +1,235 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Requirement
+- Laravel 8.x or later
+- PHP 7.4 or later
+- Composer
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Installation
+To set up the project locally, follow these steps:
 
-## About Laravel
+Clone the Repository
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+`git clone https://github.com/your-username/your-project.git
+cd your-project`\
+### Install Dependencies
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Run the following command to install all the necessary dependencies:
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+`composer install`\
+### Environment Configuration
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Copy the .env.example file to .env and configure it with your environment settings:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+`cp .env.example .env`
+Ensure that you set up your database connection in the .env file. If you are using SQLite, make sure to create the SQLite file:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Premium Partners
+`touch database/database.sqlite`
+### Database Setup
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+The repository comes with a pre-configured SQLite database that includes test user data, including usernames and Bearer tokens. This can be used for testing the API endpoints without setting up a new database from scratch.
 
-## Contributing
+If you need to migrate the database or seed it, you can run:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+`php artisan migrate --seed`\
 
-## Code of Conduct
+### Generate Application Key
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Generate a new application key:
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+`php artisan key:generate`
 
-## License
+### Serve the Application
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Start the development server:
+
+`php artisan serve` \
+
+### Testing the API
+
+Use the provided SQLite database to test the API. The database includes preloaded user data, such as usernames and Bearer tokens, which can be used to authenticate and interact with the protected endpoints.
+Example credentials:\
+`Username: asuku`\
+`Bearer Token: 2|RllfkHyWcKkFZ01c0DwGLtMh2d1W70pMvToEdOqk9c5b8b98 `\
+You can use these credentials to test the lab-tests, submit-medical-data, and logout endpoints.
+
+# Usage
+This section will guide you through how authentication is handled using the custom Authentication service in the application. The service provides methods for registering new users and logging in existing users, while using a HttpResponses trait for handling responses.
+
+## Registration
+To register a new user, a POST request is sent to the registration endpoint with the following data:
+
+
+`{
+"name": "John Doe",
+"username": "johndoe",
+"email": "john.doe@example.com",
+"password": "securepassword"
+}`
+
+Example Request:
+
+
+`POST /api/register
+Content-Type: application/json`
+
+`{
+"name": "John Doe",
+"username": "johndoe",
+"email": "john.doe@example.com",
+"password": "securepassword"
+}`
+
+
+Expected Response:
+
+Success: The user is successfully created.
+
+`
+{
+"status": "success",
+"message": "User Created"
+}`\
+Error: If there is an issue during register, an error response is returned.
+
+
+`{
+"status": "error",
+"code": 401,
+"message": "Something went wrong",
+"data": "Error message"
+}`
+## Login
+To log in a user, a POST request is sent to the login endpoint with the user's email and password. If the credentials are valid, an authentication token is generated and returned.
+
+Example Request:
+
+`POST /api/login
+Content-Type: application/json
+
+{
+"email": "john.doe@example.com",
+"password": "securepassword"
+}`\
+
+
+
+Expected Response:
+
+Success: The user is authenticated, and a token is returned.
+
+
+`{
+"status": "success",
+"code": 201,
+"message": "Auth Token",
+"data": "Bearer your-generated-token"
+}`\
+Error: If the credentials are invalid, an error response is returned.
+
+
+`{
+"status": "error",
+"code": 401,
+"message": "Invalid Credentials",
+"data": ""
+}`
+
+## Lab Tests Endpoint
+   The lab-tests endpoint provides a paginated list of laboratory tests.
+
+Endpoint:
+
+
+`GET /api/lab-tests
+Authorization: Bearer {your-token}`
+Example Request:
+
+`GET /api/lab-tests
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...`
+\
+
+Expected Response:
+
+Success: A paginated list of lab tests is returned.
+
+
+`{
+"data": [
+{
+"id": 1,
+"name": "Chest",
+"created_at": "2024-08-09T12:34:56.000000Z",
+"updated_at": "2024-08-09T12:34:56.000000Z"
+},
+{
+"id": 2,
+"name": "Cervical Vertebrae",
+"created_at": "2024-08-09T12:34:56.000000Z",
+"updated_at": "2024-08-09T12:34:56.000000Z"
+},
+...
+],
+"links": {
+"first": "http://yourapp.test/api/lab-tests?page=1",
+"last": "http://yourapp.test/api/lab-tests?page=10",
+"prev": null,
+"next": "http://yourapp.test/api/lab-tests?page=2"
+},
+"meta": {
+"current_page": 1,
+"from": 1,
+"last_page": 10,
+"path": "http://yourapp.test/api/lab-tests",
+"per_page": 15,
+"to": 15,
+"total": 150
+}
+}` \
+Error: If the token is invalid or missing, a 401 Unauthorized response is returned.
+
+`
+{
+"message": "Unauthenticated."
+}`
+## Submit Medical Data Endpoint
+   The submit-medical-data endpoint is used to submit medical data for a specific user. This data is then sent via email to peopleoperations@kompletecare.com.
+
+Endpoint:
+
+`POST /api/submit-medical-data
+Authorization: Bearer {your-token}
+Content-Type: application/json`
+Example Request:
+
+`POST /api/submit-medical-data
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+Content-Type: application/json
+
+{
+"username": "john_doe",
+"data": ["Test Result 1", "Test Result 2", "Test Result 3"]
+}`
+Expected Response:
+
+Success: The medical data is submitted successfully, and a confirmation message is returned.
+
+
+`{
+"message": "Data submitted successfully"
+}`
+Error: If the user is not found or there is an issue with the request, an appropriate error response is returned.
+
+
+`{
+"error": "User not found."
+}`
+or
+
+
+`{
+"error": "An error occurred: [error message]"
+}`

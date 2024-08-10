@@ -3,8 +3,6 @@
 namespace App\Services;
 
 
-use App\Events\UserPreferenceEvent;
-use App\Models\Profile;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Contracts\Auth\StatefulGuard;
@@ -14,19 +12,6 @@ use Illuminate\Validation\ValidationException;
 class Authentication
 {
     use HttpResponses;
-
-    /**
-     * The guard implementation.
-     *
-     * @var \Illuminate\Contracts\Auth\StatefulGuard
-     *
-     */
-    protected $guard;
-    public function __construct(StatefulGuard $guard,)
-    {
-        $this->guard = $guard;
-
-    }
 
     /**
      * Register a new user account.
