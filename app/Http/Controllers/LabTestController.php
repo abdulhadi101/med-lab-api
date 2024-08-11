@@ -10,7 +10,7 @@ use App\Traits\HttpResponses;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-;
+
 
 class LabTestController extends Controller
 {
@@ -23,29 +23,15 @@ class LabTestController extends Controller
         $this->labTest = $labTest;
     }
 
-    public function index()
+    public function submitMedicalData($rootValue, array $args)
     {
-         $test = LabTest::paginate(100);
-         return $this->success( LabResource::collection($test), '', );
-    }
-    public function submit(TestDataRequest $request)
-    {
-
-        $username = $request->input('username');
-        $data = $request->input('data');
-
         try {
-            // Use the service to submit the medical data
-            $this->labTest->submitMedicalData($username, $data);
-
-            return $this->success('', 'Data submitted successfully', 200);
+            $this->labTest->submitMedicalData($args['username'], $args['data']);
+            return 'Data submitted successfully';
         } catch (ModelNotFoundException $e) {
-            // Handle the case where the user is not found
-            return $this->error( 'User not found.', 404);
+            throw new \Exception('User not found.');
         } catch (Exception $e) {
-            // Handle any other exceptions
-            return $this->error( 'An error occurred: ',  500, $e->getMessage(),);
+            throw new \Exception('An error occurred: ' . $e->getMessage());
         }
-
     }
 }
