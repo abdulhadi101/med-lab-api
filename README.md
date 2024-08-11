@@ -53,7 +53,7 @@ Start the development server:
 Use the provided SQLite database to test the API. The database includes preloaded user data, such as usernames and Bearer tokens, which can be used to authenticate and interact with the protected endpoints.
 Example credentials:\
 `Username: asuku`\
-`Bearer Token: 2|VpC1ZJLroLFJ14l6gzlCT9ELRfE1BVI9LBVbteNt3f4921d3 `\
+`Bearer Token: 1|kkUoKDwOi1frZkZGDnKIMkf5PDk5kN0U7q3skpiTbf589b52 `\
 You can use these credentials to test the lab-tests, submit-medical-data, and logout endpoints.
 
 # Usage
