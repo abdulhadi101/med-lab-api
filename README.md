@@ -3,6 +3,7 @@
 - PHP 7.4 or later
 - Composer
 
+
 # Installation
 To set up the project locally, follow these steps:
 
@@ -49,7 +50,11 @@ Start the development server:
 `php artisan serve` \
 
 ### Testing the API
+There are two implementation one for normal Rest API, while the other is for GraphQL using Lighthouse-php,
+### GraphQL Implmentation
+The GraphQl Implementation is on the graphql-lighthouse branch
 
+### Rest API
 Use the provided SQLite database to test the API. The database includes preloaded user data, such as usernames and Bearer tokens, which can be used to authenticate and interact with the protected endpoints.
 Example credentials:\
 `Username: asuku`\
