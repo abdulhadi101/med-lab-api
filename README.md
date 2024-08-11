@@ -238,3 +238,22 @@ or
 `{
 "error": "An error occurred: [error message]"
 }`
+
+### Unit Test
+Five unit test was also written to test the functionality of the endpoints
+
+`$ php artisan test`
+
+   PASS  Tests\Feature\LabTestControllerTest
+  ✓ test_lab_tests_endpoint_requires_authentication
+  ✓ test_submit_medical_data_endpoint_requires_authentication
+  ✓ test_authenticated_user_can_access_lab_tests_endpoint
+  ✓ test_authenticated_user_can_submit_medical_data
+  ✓ test_user_can_logout
+
+  Tests:  5 passed
+  Time:   1.87s
+
+
+#### Note
+This the test uses the same database, so it should be ran after testing the api, if not all data it will get wiped out after running the tes
